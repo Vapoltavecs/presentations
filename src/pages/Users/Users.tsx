@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import Loader from "../../components/Loader";
+import Center from "../../components/ui/Center";
 import Container from "../../components/ui/Container";
 import Title from "../../components/ui/Title";
 import { IUser } from "../../models/User";
@@ -28,7 +29,9 @@ export const Users = () => {
     <Container>
       <Title>Пользователи</Title>
       {loading ? (
-        <Loader />
+        <Center horizontal>
+          <Loader />
+        </Center>
       ) : users.length > 0 ? (
         users.map((el) => <User {...el} />)
       ) : (

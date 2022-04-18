@@ -31,6 +31,7 @@ export const ModalStyled = styled.div`
     z-index: 700;
     border-radius: 4px;
     position: relative;
+    max-width: 95%;
   }
   .close {
     position: absolute;

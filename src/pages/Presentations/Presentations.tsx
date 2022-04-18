@@ -16,6 +16,7 @@ export const Presentations = () => {
     try {
       setloading(true);
       const presentations = await PresentationsService.getAll();
+      presentations.data.reverse();
       setPresentations(presentations.data);
     } catch (error) {
       console.log(error);
@@ -23,6 +24,8 @@ export const Presentations = () => {
       setloading(false);
     }
   };
+
+  
 
   useEffect(() => {
     getPresentations();

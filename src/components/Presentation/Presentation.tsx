@@ -32,23 +32,27 @@ export const Presentation: FC<{ id: number }> = ({ id = 4 }) => {
     </Center>
   ) : presentation ? (
     <PresentationStyled>
-      <div className="presentation__title">{presentation.title}</div>
-      <div className="presentation__description">
-        {presentation.description}
-      </div>
-      <div className="presentations__profile">
-        <Avatar name={presentation.owner.name} size={40} />
+      <Center vertical>
         <div>
-          {presentation.owner.name} {presentation.owner.last_name}
+          <div className="presentation__title">{presentation.title}</div>
+          <div className="presentation__description">
+            {presentation.description}
+          </div>
+          <div className="presentations__profile">
+            <Avatar name={presentation.owner.name} size={40} />
+            <div>
+              {presentation.owner.name} {presentation.owner.last_name}
+            </div>
+          </div>
+          <a
+            href={presentation.presentation}
+            className="presentation__link"
+            download
+          >
+            Скачать презентацию
+          </a>
         </div>
-      </div>
-      <a
-        href={presentation.presentation}
-        className="presentation__link"
-        download
-      >
-        Скачать презентацию
-      </a>
+      </Center>
     </PresentationStyled>
   ) : (
     <div style={{ textAlign: "center" }}>presentation not found...</div>

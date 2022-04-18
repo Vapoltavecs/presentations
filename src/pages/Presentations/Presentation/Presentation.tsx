@@ -12,13 +12,13 @@ export const Presentation: FC<IPresentation> = ({ title, id, owner }) => {
 
   return (
     <PresentationStyled>
-      <div onClick={openModal}>{title}</div>
+      <div onClick={openModal}>{title.substring(0, 10)}...</div>
       <div className="presentation__profile" onClick={openModal}>
-        <div style={{ marginRight: 10 }}>{owner.last_name}</div>
+        <div style={{ marginRight: 10 }}>{owner.last_name.substring(0, 10)}..</div>
         <Avatar size={40} name={owner.name} />
       </div>
       {isOpenModal && (
-        <Modal closeModal={closeModal} width={500} height={500}>
+        <Modal closeModal={closeModal} width={300}>
           <PresentationModal id={id} />
         </Modal>
       )}

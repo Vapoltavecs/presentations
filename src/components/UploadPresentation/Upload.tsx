@@ -1,32 +1,51 @@
-import React, { useCallback, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { IPresentationUpload } from "../../models/Presentations";
+import Presentations from "../../services/Presentation";
 import Form from "../form";
 import Button from "../ui/Button";
 import Input from "../ui/Input";
 import Title from "../ui/Title";
 import { UploadPresentationStyle } from "./style";
 
-export const UploadPresentation = () => {
+export const UploadPresentation: FC<{ onClose: () => void }> = ({
+  onClose,
+}) => {
   const [loading, setLoading] = useState(false);
   const [form, setForm] = useState<IPresentationUpload>({
     title: "",
     description: "",
-    presentation: undefined,
   });
 
+  const navigate = useNavigate();
+
+  const [presentation, setPresentation] = useState<File>();
+
   const createPresentation = useCallback(async (form: IPresentationUpload) => {
+    console.log(presentation);
     try {
-    } catch (error) {}
+      setLoading(true);
+      await Presentations.create({ ...form });
+      onClose();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
   const onSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    createPresentation(form);
+    createPresentation({ ...form, presentation });
+  };
+
+  const onUploadInput = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPresentation(e.target.files![0]);
   };
 
   const onChange = (e: React.ChangeEvent<HTMLInputElement>) =>
     setForm({ ...form, [e.target.name]: e.target.value });
-
   return (
     <UploadPresentationStyle>
       <Title>Загрузка презенатции</Title>
@@ -41,20 +60,22 @@ export const UploadPresentation = () => {
           />
           <Input
             onChange={onChange}
-            name="title"
+            name="description"
             placeholder="Описание"
-            value={form.title}
+            value={form.description}
             type="text"
           />
-          <Input
-            onChange={onChange}
-            name="title"
-            placeholder="Название"
-            value={form.title}
-            type="file"
-          />
+          <div className="upload__files">
+            <input
+              type="file"
+              className="upload__files-input"
+              accept=".xlsx,.xls,.doc, .docx,.ppt, .pptx,.txt,.pdf"
+              onChange={onUploadInput}
+            />
+          </div>
+          {presentation && presentation.name}
           <Button type="submit" onClick={onSubmit} styleType="primary">
-            Загрузить презентацию
+            {loading ? "Загрузка..." : "Загузирть презентацию"}
           </Button>
         </>
       </Form>
